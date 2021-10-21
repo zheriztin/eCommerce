@@ -9,28 +9,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/products">Product</a>
         </li>
-        <%if (role) { %>
-
-          <% if(role === "Buyer" ) {%>
-            <li class="nav-item">
-              <a class="nav-link" href="/carts">Shopping Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/transactions">TRANSACTION</a>
-            </li>
-            <%} else {%>
-              <li class="nav-item">
-                <a class="nav-link" href="/products/add">Add Product</a>
-              </li>
-              <%}%>
-              <form class="d-flex" method="post" action="/logout">
-                <button class="btn btn-outline-success" type="submit">LOGOUT</button>
-              </form>  
-        <%} else {%>
           <form class="d-flex" method="get" action="/login">
             <button class="btn btn-primary" type="submit">LOGIN</button>
           </form>
-        <%}%>
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

@@ -32,28 +32,35 @@
   .title {
     text-align: center;
   }
+
   </style>
   
 </head>
 <body>
 <%- include('partials/navbar') %>
 
-  <h1 class="title">TRANSACTIONNNNNN PAGE </h1>
-  <div class="">
-    <%=JSON.stringify(data)%>
-    <%data.forEach( (el,index) => { %>
-      <tr>
-        <td><%= index+1 %></td>
-        <td><%= el.id %></td>
-
-        <td><%= el.total %></td>
-        <td><%= el.createdAt %></td>
-        <td><button onclick="location.href='transactions/<%=el.id%>'">DETAILS</button></td>
-
-
-      </tr>
-
-    <% }) %>
+  <h1 class="title">TRANSACTION PAGE </h1>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>NO</th>
+          <th>Total</th>
+          <th>Tanggal</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach((el,index) => { %>
+          <tr>
+            <td><%= index+1 %></td>
+            <td><%= el.total%></td>
+            <td><%=el.createdAt%></td>
+            <td><button onclick="location.href='transactions/<%=el.id%>'">DETAILS</button></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
   </div>
   <%- include('partials/script') %>
   

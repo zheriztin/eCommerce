@@ -1,9 +1,15 @@
 <%- include('partials/head', {title: "Home Page"}) %>
-<%- include('partials/navbar') %>
 <style>
-    .title {
+  .title {
     text-align: center;
   }
 </style>
-<h1 class="title">Welcome ~</h1>
+
+  <%if(role){%>
+    <%- include('partials/navbar', {role:role}) %>
+    <%}else {%>
+    <%- include('partials/navbarGuest') %>
+    <%}%>
+  <h1 class="title">Welcome ~</h1>
+
 <%- include('partials/foot') %>

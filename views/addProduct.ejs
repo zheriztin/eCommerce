@@ -1,5 +1,5 @@
 <%- include('partials/head', {title: "Home Page"}) %> 
-<%-include('partials/navbar') %>
+<%-include('partials/navbar',{role:role}) %>
 
 <h1 style="text-align: center">Add New Product</h1>
 <form action="/products/add" method="post">
@@ -17,7 +17,7 @@
     <select name="CategoryId">
         <option selected value="" disabled>--Choose--</option>
         <% data.forEach(category => { %>
-        <option><%= category.name %></option>   <!-- Belum Selesai option masih kacau-->
+        <option value="<%=category.id%>"><%= category.name %></option>   <!-- Belum Selesai option masih kacau-->
         <% }) %>
     </select><br><br>
     <button type="submit" class="btn btn-primary">Submit</button>
