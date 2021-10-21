@@ -1,0 +1,26 @@
+[
+	{
+		"email": "werren@mail.com",
+		"password": "$2a$10$b9/JoE6Y1dE1fsuPOZ4Sx.BaC4MK1OblP0l2jhWdnkZz.4ntzeU5G",
+		"name": "Werren",
+		"phone": "873049304",
+		"address": "jalan sultan",
+		"role": "Seller"
+	},
+	{
+		"email": "melisa@mail.com",
+		"password": "$2a$10$dvttE4KRaAdyw57YVxqBIuferTy2M5.ldvo.r9NRHj373CG04W8/q",
+		"name": "Melisa",
+		"phone": "121678323",
+		"address": "jalan sudirman",
+		"role": "Buyer"
+	},
+	{
+		"email": "chintia@mail.com",
+		"password": "$2a$10$V9Rfeq38kkQ9kAfJC7rDMubYwKbCcUYDIK7PemmPkMKg3mfXtXqbq",
+		"name": "Chintia",
+		"phone": "3023402020",
+		"address": "jalan tenaga",
+		"role": "Buyer"
+	}
+]
