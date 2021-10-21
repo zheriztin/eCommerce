@@ -43,6 +43,7 @@
     <% if(data) { %>
       <%=JSON.stringify(data)%>
       <button onclick="location.href='/carts/checkout'"> CHECKOUT</button>
+      <button onclick="location.href='/transactions/send/invoice'"> INVOICE</button>
     <%} %>
   </div>
   <%- include('partials/script') %>

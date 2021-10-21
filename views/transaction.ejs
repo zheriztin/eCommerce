@@ -39,8 +39,21 @@
 <%- include('partials/navbar') %>
 
   <h1 class="title">TRANSACTIONNNNNN PAGE </h1>
-  <div class="cardContainer">
+  <div class="">
     <%=JSON.stringify(data)%>
+    <%data.forEach( (el,index) => { %>
+      <tr>
+        <td><%= index+1 %></td>
+        <td><%= el.id %></td>
+
+        <td><%= el.total %></td>
+        <td><%= el.createdAt %></td>
+        <td><button onclick="location.href='transactions/<%=el.id%>'">DETAILS</button></td>
+
+
+      </tr>
+
+    <% }) %>
   </div>
   <%- include('partials/script') %>
   

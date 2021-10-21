@@ -61,24 +61,29 @@ module.exports = class Controller {
       //HITUNG subtotal di front end atau di controller
 
       // update the cartId in itemInput
-      itemInput.CartId = data[0].dataValues.id
+      const CartId = data[0].dataValues.id
+      itemInput.CartId = CartId
       itemInput.subTotal = price
       
       //CARO APAKAH PRODUCT SUDAH ADA DI CART ITEM
       
-      return CartItem.findOrCreate( { where: { ProductId }, defaults: itemInput } )
+      return CartItem.findOrCreate( { where: { ProductId , CartId}, defaults: itemInput } )
     })
     .then( data => {
+    
       if ( !data[1] ) {
         // res.json({message: "ini dari find", data})
         // update quantity by one 
+        console.log("masuk update");
         const updateInput = { ...data[0].dataValues }
         delete updateInput.id
         updateInput.quantity += 1
         updateInput.subTotal = updateInput.quantity * price
         return CartItem.update( updateInput, {  where: { id: data[0].id } } )
 
-      } 
+      }  else {
+        console.log("masuk createddddd ><><<><><><><><>");
+      }
 
     })
     .then( data => {
@@ -101,6 +106,7 @@ module.exports = class Controller {
   static checkout(req,res) {
     const { user: {id: UserId}} = req.session
     let transactionId  = 0 
+    let transactionTotal = 0
 
     Transaction.create( {UserId})
     .then(data => {
@@ -108,10 +114,9 @@ module.exports = class Controller {
       return Cart.findOne({ where: { UserId }, include: {all: true, nested: true} } )
     })
     .then(data => {
-      // cart && cart items
-      console.log("MASUK KE CART -----------------------");
       const bulkOrderInput = data.CartItems.map (el => {
         const {name, price, description, imageUrl} = el.Product
+        transactionTotal += el.subTotal
         return {
           itemName: name,
           itemImageUrl: imageUrl,
@@ -122,9 +127,6 @@ module.exports = class Controller {
           TransactionId: transactionId
         }
       })
-      // console.log(data.CartItems[0].Product,"<<<<< ini data dari  PRODUCTTTTfind one");
-      // res.render('transaction', {data})
-
       return Order.bulkCreate(bulkOrderInput)
     })
     .then(data => {
@@ -133,8 +135,10 @@ module.exports = class Controller {
       return Cart.destroy({where: {UserId}, returning:true})
     })
     .then(data => {
+      return Transaction.update({total: transactionTotal}, { where: {id: transactionId}})
+    })
+    .then(data => {
       res.redirect('/products')
-      console.log(data, "CART SUDAH DI DELETE");
     })
     .catch(error => {
       console.log(error, ">>>>> errrorrorroororoor");

@@ -7,15 +7,11 @@ const transactionRouter = require('./transaction')
 
 const isLoginMiddleware = function (req, res, next)  {
   if (req.session.isLogin) {
-    console.log("ini");
     next()
   } else {
-    console.log("masiukkkk ke else ?????");
-    // redirect ke Landing Page
-    // send alert please login first
+    // redirect ke landing page
     res.redirect('/products')
   }
-
 }
 
 //USER
@@ -33,7 +29,6 @@ router.get('/users/profile', getUserProfile)
 router.use('/products', productRouter)
 
 //cart
-
 router.use('/carts', isLoginMiddleware, cartRouter)
 router.use('/transactions', isLoginMiddleware, transactionRouter)
 
