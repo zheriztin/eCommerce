@@ -32,13 +32,30 @@
   .title {
     text-align: center;
   }
+  .button-group {
+    display: flex;
+    margin: 10px;
+  }
   </style>
   
 </head>
 <body>
 <%- include('partials/navbar', {role:role}) %>
+<%= JSON.stringify(role)%>
 
   <h1 class="title">PRODUCT LIST</h1>
+  <div>
+    FILTER
+    <button onclick="location.href='/products?categoryId=2'">CLOTHES</button>
+    <button onclick="location.href='/products?categoryId=1'"> FOOD AND BEVERAGE</button>
+  </div>
+  <div>
+    SORT
+    <button onclick="location.href='/products?sortBy=price&orderBy=desc'">Price</button>
+    <button onclick="location.href='/products?sortBy=name&orderBy=desc'"> Name</button>
+  </div>
+  <%= JSON.stringify(user) %>
+  
   <div class="cardContainer">
     <% data.forEach(el => { %>
       <div class="card">
@@ -47,14 +64,22 @@
           <h4 class="title"><b><%=el.name%></b></h4> 
           <h5>Price: <%=el.price%></h5>
           <p><%=el.description %></p> 
-          <form action="/carts/add" method="post">
-            <input type="hidden" name="ProductId" value="<%=el.id%>">
-            <button type="submit"> ADD to Cart</button>
-          </form>
+          <div class="button-group">
+            <% if(role === 'Buyer') { %>
+              <form action="/carts/add" method="post">
+                <input type="hidden" name="ProductId" value="<%=el.id%>">
+                <button type="submit"> ADD to Cart</button>
+              </form>
+           <% } %>
+            <%  if(role === 'Seller' && el.User.id === user.id) {%>
+              <button onclick="location.href='/products/<%=el.id%>/delete'"> DELETE</button>
+              <button onclick="location.href='/products/<%=el.id%>/edit'"> EDIT</button>
+
+            <%}%>
+          </div>
+         
         </div>
       </div>
-
-
     <% }) %>
   </div>
   <%- include('partials/script') %>
