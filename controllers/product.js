@@ -1,68 +1,69 @@
-const { Product } = require('../models') 
+const { Product, User , Category} = require('../models') 
 
 module.exports = class Controller {
 
   static getProducts (req, res) {
-    // const {sort, name} = req.query
-    // const where = name ? {name} : null
-
-    const {role} = req.session
-    Product.findAll()
+    const {categoryId, sortBy, orderBy} = req.query
+    const where =  categoryId ? {CategoryId: +categoryId} : null
+    const order = sortBy && orderBy ? [[sortBy, orderBy]] :null
+    const {role, user} = req.session
+    Product.findAll({where, order, include: User})
     .then(data => {
-      res.render('product',{ data, role })
+      res.render('product',{ data, role, user })
     })
     .catch(error => {
-      console.log(error);
       res.send(error)
     })
   }
 
-
   static createProduct (req, res) {
+    Category.findAll()
+    .then(data => {
+      res.render('addProdcut', {data})
+    })
+    .catch(error => {
+      res.send(error)
+    })
     res.redirect('/producs/add')
   }
 
   static postCreateProduct (req, res) {
-    //get the USER ID from the SESSION
-    // const {user: {id: UserId}} = req.session
-    const UserId = 1
+    const {user: {id: UserId}} = req.session
     const { name, description, price, imageUrl, CategoryId } = req.body
     const input = { name, description, price, imageUrl,UserId, CategoryId }
-    console.log("masuk product controller");
     Product.create(input)
     .then(data => {
-      res.json(data)
+      res.redirect('/products')
     })
     .catch(error => {
-      console.log(error,".>>> werreo ");
       res.send(error)
     })
-    
   }
 
   static editProduct (req, res) {
     const {productId} = req.params
-    Product.findByPk( productId, { include: Categories } )
+    let category = []
+    Category.findAll()
     .then(data => {
-      res.redirect('editProduct', {data})
+      category = data
+      return Product.findByPk(productId)
+    })
+    .then(data => {
+      res.redirect('editProduct', {data, category})
     })
     .catch(error => {
-      console.log(error);
       res.send(error)
     })
   }
 
-  static postEditProduct (req, res) {
-    //GET USER ID FROM SESSION AND MAKE SURE THE ROLE IN THE MIDDLEWARE
-    const UserId = 1
+  static postEditProduct (req, res) {  
+    const {user:{id: UserId}} = req.session  
     const { productId } = req.params
     const { name, description, price, imageUrl, CategoryId } = req.body
     const input = { name, description, price, imageUrl,UserId, CategoryId }
-    //returning mengambalikan data setelah di edit, nanti dihapus
     Product.update(input, { where: { id: productId }, returning: true } )
     .then(data => {
-      res.json(data)
-      //res.redirect('/products')
+      res.redirect('/products')
     })
     .catch( error => {
       console.log(error);
@@ -71,15 +72,12 @@ module.exports = class Controller {
   } 
 
   static deleteProduct (req, res) {
-    const UserId = 1
     const { productId } = req.params
     Product.destroy({ where: { id: productId } } )
     .then(data => {
-      res.json(data)
-      // res.redirect('/products')
+      res.redirect('/products')
     })
     .catch( error => {
-      console.log(error)
       res.send(error)
     })
   }

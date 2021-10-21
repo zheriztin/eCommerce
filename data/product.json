@@ -3,16 +3,32 @@
 		"name": "Soeklat Roegal EDITED",
 		"description": "Tjampuran Coklat Manis + Roegal + Es Krim",
 		"price": 23000,
-		"CategoryId": 1,
-		"UserId": 1,
+		"CategoryId": 3,
+		"UserId": 7,
 		"imageUrl": "https://cf.shopee.co.id/file/99c48b71fe1bfc6a5dbfae17f7b5c27d"
 	},
 	{
 		"name": "Soeklat Roegal",
 		"description": "Tjampuran Coklat Manis + Roegal + Es Krim",
 		"price": 23000,
-		"CategoryId": 1,
-		"UserId": 1,
+		"CategoryId": 3,
+		"UserId": 7,
 		"imageUrl": "https://cf.shopee.co.id/file/99c48b71fe1bfc6a5dbfae17f7b5c27d"
+	},
+	{
+		"name": "MARKS & SPENCER - Blouse Wanita - Pure Cotton Floral Broderie Ruffle Blouse",
+		"description": "Give your summer style a fresh floral note with this long-sleeved, pure cotton blouse. Features delicate ruffled details for a playful spin. Mandarin collar with a half placket.",
+		"price": 300000,
+		"CategoryId": 4,
+		"UserId": 7,
+		"imageUrl": "https://cf.shopee.co.id/file/69b9f6da90902965e861711af31363b3"
+	},
+	{
+		"name": "Pure Cotton Floral Regular Fit Blouse",
+		"description": "Floral embroidery and pintuck detailing bring a dainty finish to this pure cotton blouse. ",
+		"price": 350000,
+		"CategoryId": 4,
+		"UserId": 7,
+		"imageUrl": "https://images.tokopedia.net/img/cache/500-square/hDjmkQ/2021/5/27/e0366d8c-76aa-4203-8755-3c1fb9ca3215.jpg"
 	}
 ]
