@@ -1,5 +1,4 @@
 const { Product, User , Category} = require('../models') 
-
 module.exports = class Controller {
 
   static getProducts (req, res) {
@@ -26,7 +25,7 @@ module.exports = class Controller {
     })
     res.redirect('/producs/add')
   }
-
+  //Post create Product masih error
   static postCreateProduct (req, res) {
     const {user: {id: UserId}} = req.session
     const { name, description, price, imageUrl, CategoryId } = req.body
@@ -67,7 +66,7 @@ module.exports = class Controller {
     })
     .catch( error => {
       console.log(error);
-      res.semd(error)
+      res.send(error)
     })
   } 
 

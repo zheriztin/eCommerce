@@ -43,7 +43,9 @@
 <%- include('partials/navbar', {role:role}) %>
 <%= JSON.stringify(role)%>
 
+
   <h1 class="title">PRODUCT LIST</h1>
+  <a href="/products/add" class="link-primary" style="text-align:center">Add Your Product Here</a>
   <div>
     FILTER
     <button onclick="location.href='/products?categoryId=2'">CLOTHES</button>

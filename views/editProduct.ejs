@@ -1,0 +1,54 @@
+<%- include('partials/head', {title: "Edit Product"}) %> 
+<%-include('partials/navbar') %>
+<form action="/products/<%= data[0].id %>/edit" method="POST">
+    <h1 class="text-center"><%= data[0].name %></h1>
+    <div
+      style="display: block; margin-left: auto; margin-right: auto; width: 50%"
+    >
+      <img src="<%= data[0].imageUrl %>" class="center" />
+    </div>
+    <br />
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label>Product Name</label>
+        <input class="form-control" type="text" name="name" value="<%= data[0].name %>" />
+      </div>
+      <div class="col-md-6">
+        <label>Description</label>
+        <input
+          class="form-control"
+          type="text"
+          name="description"
+          value="<%= data[0].description %>"
+        />
+      </div>
+    </div>
+    <br />
+    <label>Update Date</label>
+    <br />
+    <input
+      class="form-control"
+      type="date"
+      name="updatedAt"
+      value="<%= new Date(data[0].updatedAt).toISOString().split('T')[0] %>"
+    />
+    <br />
+    <label>New Price</label>
+    <br />
+    <input class="form-control" type="number" name="price" value="" />
+    <br /><br />
+    <label> New Image URL</label>
+    <br />
+    <input class="form-control" type="text" name="imageUrl" value="" />
+    <br /><br />
+    <button class="btn btn-primary" type="update">Update Product</button>
+    <select name="CategoryId">
+        <option selected value="" disabled>--Choose--</option>
+        <% if (data[0].Category.name == 'Food & Beverage') { %>
+            <option value= "2">Clothes</option>
+        <% } else { %>
+            <option value = "1">Food & Beverage</option>
+        <% } %>
+    </select><br><br>
+  </form>
+<%- include('partials/foot') %>
