@@ -1,4 +1,4 @@
-const { Product } = require('../models') 
+const { Product, Category, User } = require('../models') 
 
 module.exports = class Controller {
 
@@ -19,32 +19,47 @@ module.exports = class Controller {
 
 
   static createProduct (req, res) {
-    res.redirect('/producs/add')
+    Category.findAll()
+    .then(data => {
+      // console.log(data[1].Category.name);
+      res.render('addProduct', {data})
+    })
+    .catch(err => {
+      res.send(err)
+    })
   }
-
+  //Post create Product masih error
   static postCreateProduct (req, res) {
     //get the USER ID from the SESSION
-    // const {user: {id: UserId}} = req.session
-    const UserId = 1
-    const { name, description, price, imageUrl, CategoryId } = req.body
-    const input = { name, description, price, imageUrl,UserId, CategoryId }
-    console.log("masuk product controller");
+    const {user: {id: UserId}} = req.session
+    // const UserId = 1  // ini masih belum tau apa
+    const { name, description, price, CategoryId, imageUrl  } = req.body
+    const input = { name, description, price, CategoryId, UserId, createdAt: new Date(), updatedAt: new Date(), imageUrl }  //Menghapus UserId
+    // console.log("masuk product controller");
     Product.create(input)
     .then(data => {
-      res.json(data)
+      res.redirect("/products")
     })
     .catch(error => {
-      console.log(error,".>>> werreo ");
+      // console.log(error,".>>> werreo ");
       res.send(error)
     })
     
   }
 
   static editProduct (req, res) {
-    const {productId} = req.params
-    Product.findByPk( productId, { include: Categories } )
+    let id = req.params.productId
+    // const {productId} = req.params
+    Product.findAll({
+      where: { 
+        id:id
+      },
+      include: {
+        model: Category
+      }
+    })
     .then(data => {
-      res.redirect('editProduct', {data})
+      res.render('editProduct', {data})
     })
     .catch(error => {
       console.log(error);
@@ -57,16 +72,16 @@ module.exports = class Controller {
     const UserId = 1
     const { productId } = req.params
     const { name, description, price, imageUrl, CategoryId } = req.body
-    const input = { name, description, price, imageUrl,UserId, CategoryId }
+    const input = { name, description, price, imageUrl, UserId, CategoryId }
     //returning mengambalikan data setelah di edit, nanti dihapus
     Product.update(input, { where: { id: productId }, returning: true } )
     .then(data => {
-      res.json(data)
-      //res.redirect('/products')
+      // res.json(data)
+      res.redirect('/products')
     })
     .catch( error => {
       console.log(error);
-      res.semd(error)
+      res.send(error)
     })
   } 
 

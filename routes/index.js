@@ -19,11 +19,13 @@ const isLoginMiddleware = function (req, res, next)  {
 }
 
 //USER
+router.get('/home', (req, res) => res.render('landing-page'))
 router.get('/register', register)
 router.post('/register', postRegister)
 router.get('/login', login)
 router.post('/login', postLogin)
 router.post('/logout', logout)
+
 // router.get('/users/profile', isLoginMiddleware, getUserProfile)
 router.get('/users/profile', getUserProfile)
 

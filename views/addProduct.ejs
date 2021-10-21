@@ -1,0 +1,25 @@
+<%- include('partials/head', {title: "Home Page"}) %> 
+<%-include('partials/navbar') %>
+
+<h1 style="text-align: center">Add New Product</h1>
+<form action="/products/add" method="post">
+  <div class="mb-3">
+    <label>Name of Product</label>
+    <input class="form-control" type="text" name="name" /><br />
+    <label>Price</label>
+    <input type="number" class="form-control" name="price" /><br />
+    <label class="form-label">Product Description</label>
+    <input type="text" class="form-control" name="description" /><br />
+    <label class="form-label">Image URL</label>
+    <input type="text" class="form-control" name="imageUrl" /><br />
+ </div>
+    <label>Category Product</label>
+    <select name="CategoryId">
+        <option selected value="" disabled>--Choose--</option>
+        <% data.forEach(category => { %>
+        <option><%= category.name %></option>   <!-- Belum Selesai option masih kacau-->
+        <% }) %>
+    </select><br><br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<%- include('partials/foot') %>

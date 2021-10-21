@@ -38,7 +38,8 @@
 <body>
 <%- include('partials/navbar', {role:role}) %>
 
-  <h1 class="title">PRODUCT LIST</h1>
+  <h1 class="title">PRODUCT LIST</h1><br>
+  <a href="/products/add" class="link-primary" style="text-align:center">Add Your Product Here</a>
   <div class="cardContainer">
     <% data.forEach(el => { %>
       <div class="card">
@@ -53,8 +54,6 @@
           </form>
         </div>
       </div>
-
-
     <% }) %>
   </div>
   <%- include('partials/script') %>
