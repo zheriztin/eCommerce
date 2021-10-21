@@ -15,7 +15,10 @@ const isLoginMiddleware = function (req, res, next)  {
 }
 
 //USER
-router.get('/home', (req, res) => res.render('landing-page'))
+router.get('/', (req, res) => {
+  const {role} = req.session
+   res.render('landing-page', {role})
+  })
 router.get('/register', register)
 router.post('/register', postRegister)
 router.get('/login', login)

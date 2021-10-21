@@ -2,13 +2,20 @@ const { Product, User , Category} = require('../models')
 module.exports = class Controller {
 
   static getProducts (req, res) {
+    console.log("masuk product")
     const {categoryId, sortBy, orderBy} = req.query
     const where =  categoryId ? {CategoryId: +categoryId} : null
     const order = sortBy && orderBy ? [[sortBy, orderBy]] :null
     const {role, user} = req.session
-    Product.findAll({where, order, include: User})
+    let category = []
+    Category.findAll ()
+    .then (data => {
+      category=data
+      return Product.findAll({where, order, include: User})
+    })
     .then(data => {
-      res.render('product',{ data, role, user })
+      console.log(`${role}">>>>>>>>>>"`)
+      res.render('product',{ data, role, user, category})
     })
     .catch(error => {
       res.send(error)
@@ -16,14 +23,14 @@ module.exports = class Controller {
   }
 
   static createProduct (req, res) {
+    const {role} = req.session
     Category.findAll()
     .then(data => {
-      res.render('addProdcut', {data})
+      res.render('addProduct', {data,role})
     })
     .catch(error => {
       res.send(error)
     })
-    res.redirect('/producs/add')
   }
   //Post create Product masih error
   static postCreateProduct (req, res) {
@@ -35,11 +42,13 @@ module.exports = class Controller {
       res.redirect('/products')
     })
     .catch(error => {
+      console.log(error)
       res.send(error)
     })
   }
 
   static editProduct (req, res) {
+    const {role} = req.session
     const {productId} = req.params
     let category = []
     Category.findAll()
@@ -48,7 +57,7 @@ module.exports = class Controller {
       return Product.findByPk(productId)
     })
     .then(data => {
-      res.redirect('editProduct', {data, category})
+      res.render('editProduct', {data, category, role})
     })
     .catch(error => {
       res.send(error)

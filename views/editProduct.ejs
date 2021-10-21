@@ -1,17 +1,17 @@
 <%- include('partials/head', {title: "Edit Product"}) %> 
-<%-include('partials/navbar') %>
-<form action="/products/<%= data[0].id %>/edit" method="POST">
-    <h1 class="text-center"><%= data[0].name %></h1>
+<%-include('partials/navbar',{role:role}) %>
+<form action="/products/<%= data.id %>/edit" method="POST">
+    <h1 class="text-center"><%= data.name %></h1>
     <div
       style="display: block; margin-left: auto; margin-right: auto; width: 50%"
     >
-      <img src="<%= data[0].imageUrl %>" class="center" />
+      <img src="<%= data.imageUrl %>" class="center" />
     </div>
     <br />
     <div class="row g-3">
       <div class="col-md-6">
         <label>Product Name</label>
-        <input class="form-control" type="text" name="name" value="<%= data[0].name %>" />
+        <input class="form-control" type="text" name="name" value="<%= data.name %>" />
       </div>
       <div class="col-md-6">
         <label>Description</label>
@@ -19,36 +19,24 @@
           class="form-control"
           type="text"
           name="description"
-          value="<%= data[0].description %>"
+          value="<%= data.description %>"
         />
       </div>
     </div>
     <br />
-    <label>Update Date</label>
+    <label>Price</label>
     <br />
-    <input
-      class="form-control"
-      type="date"
-      name="updatedAt"
-      value="<%= new Date(data[0].updatedAt).toISOString().split('T')[0] %>"
-    />
-    <br />
-    <label>New Price</label>
-    <br />
-    <input class="form-control" type="number" name="price" value="" />
+    <input class="form-control" type="number" name="price" value="<%=data.price%>" />
     <br /><br />
-    <label> New Image URL</label>
+    <label>Image URL</label>
     <br />
-    <input class="form-control" type="text" name="imageUrl" value="" />
+    <input class="form-control" type="text" name="imageUrl" value="<%=data.imageUrl%>" />
     <br /><br />
-    <button class="btn btn-primary" type="update">Update Product</button>
     <select name="CategoryId">
-        <option selected value="" disabled>--Choose--</option>
-        <% if (data[0].Category.name == 'Food & Beverage') { %>
-            <option value= "2">Clothes</option>
-        <% } else { %>
-            <option value = "1">Food & Beverage</option>
-        <% } %>
+      <% category.forEach (el=>{%>
+        <option value="<%=el.id%>" <%= data.CategoryId === el.id? "selected" : null %>><%=el.name%></option>
+      <%})%>
     </select><br><br>
+    <button class="btn btn-primary" type="submit">Update Product</button>
   </form>
 <%- include('partials/foot') %>
