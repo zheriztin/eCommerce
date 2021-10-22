@@ -1,5 +1,16 @@
 const { compareHash } = require('../helpers/bcrypt')
 const { User } = require('../models')
+const nodemailer = require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  secure: false,
+  auth: {
+    user: "phase1ecommerce@gmail.com",
+    pass: "Phase123@ecommerce"
+  },
+  sendMail:true
+})
 
 module.exports = class Controller {
 
@@ -7,18 +18,19 @@ module.exports = class Controller {
     const { user: { id: UserId } } = req.session
     User.findByPk(UserId)
     .then( data => {
-      res.json(data)
       // res.redirect('userProfile', {data})
     })
     .catch( error => {
-      console.log(error)
       res.send(error)
     })
 
   }
 
   static register(req,res) {
-    res.redirect('/register')
+    console.log(req.query.errors)
+    const {errors} = req.query 
+    const newError = errors? errors.split(',') : null
+    res.render('register',{errors: newError})
   }
 
   static postRegister(req, res) {
@@ -26,20 +38,33 @@ module.exports = class Controller {
     const input = {role, name, phone, email, password, address}
     User.create(input)
     .then(data => {
-      // redirect ke halaman user setelah login
-      console.log(data,">>>");
-      res.json(data)
-      // res.render('user',{data})
+      return transporter.sendMail({
+        from: "'Shopping Mania' phase1ecommerce@gmail.com",
+        to: data.email,
+        subject: "Welcome",
+        text: "Welcome to Shopping Mania",
+        html: `<h1> Welcome to Shopping Mania </h1> 
+        <a href="http://localhost:3000/login"> Click this link to shop at Shopping Mania</a>`
+      })
+    })
+    .then(info => {
+      res.redirect('/login')
     })
     .catch(error => {
-      console.log(error,"<<< error");
-      res.json(error)
-      // res.send(error)
+      if (error.name === "SequelizeValidationError") {
+        const errors = error.errors.map(el => {
+          return el.message
+        })
+        console.log(errors)
+        res.redirect (`/register?errors=${errors}`)
+      } else {
+        res.send(error)
+      }
     })
   }
 
+
   static login(req,res) {
-    console.log("masuk login");
     res.render('login')
   }
 
@@ -53,8 +78,6 @@ module.exports = class Controller {
           req.session.user = data,
           req.session.role = data.role,
           req.session.isLogin = true,
-          console.log(req.session,".>>> sessis");
-          // res.json({message: "Logged IN"})
           res.redirect('/products')
         } else {
           // password atau email salah 
@@ -70,9 +93,7 @@ module.exports = class Controller {
   }
   
   static logout(req, res) {
-    console.log("masuk logout");
     req.session.destroy()
-    // redirect to landing page
     res.redirect('/login')
   }
 

@@ -50,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING
   }, {
     hooks: {
-      beforeCreate: async (User, options) => {
-        User.password =  await hashPassword(User.password)
+      beforeCreate:  (User, options) => {
+        User.password =   hashPassword(User.password)
       }
     },
     sequelize,

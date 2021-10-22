@@ -1,10 +1,15 @@
 const { Product, User , Category} = require('../models') 
+const {moneyFormater} = require('../helpers/currency')
+const {Op} = require('sequelize')
 module.exports = class Controller {
 
   static getProducts (req, res) {
     console.log("masuk product")
-    const {categoryId, sortBy, orderBy} = req.query
-    const where =  categoryId ? {CategoryId: +categoryId} : null
+    const {categoryId, sortBy, name,orderBy} = req.query
+    const where =  categoryId ? {CategoryId: +categoryId}
+    : name ? {name: {[Op.iLike]: `%${name}%`}}
+    : null
+    
     const order = sortBy && orderBy ? [[sortBy, orderBy]] :null
     const {role, user} = req.session
     let category = []
@@ -15,7 +20,7 @@ module.exports = class Controller {
     })
     .then(data => {
       console.log(`${role}">>>>>>>>>>"`)
-      res.render('product',{ data, role, user, category})
+      res.render('product',{ data, role, user, category,moneyFormater})
     })
     .catch(error => {
       res.send(error)

@@ -28,10 +28,12 @@
     flex-direction: column;
     margin: 20px;
     justify-content: center;
+    padding: 20px;
   }
   .title {
     text-align: center;
   }
+
   </style>
   
 </head>
@@ -41,27 +43,52 @@
   <h1 class="title">Shopping Cart</h1>
   <div class="cardContainer">
     <% if(data) { %>
-      <% data.CartItems.forEach((el,index) => { %>
-        <div class="card mb-3" >
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="<%=el.Product.imageUrl %>" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title"><%= el.Product.name%></h5>
-                <p class="card-text"><%= el.Product.description%></p>
-                <p class="card-text"><%= el.quantity%></p>
-                <p class="card-text"><small class="text-muted"><%= el.Product.price%></small></p>
-                <p class="card-text"><%= el.subTotal%></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <% }) %>
-        <button onclick="location.href='/carts/checkout'"> CHECKOUT</button>
-        <button onclick="location.href='/transactions/send/invoice'"> INVOICE</button>
+      <table class="table text-center p-2 m-20">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" class="w-25" >Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col" colspan="3">Quantity</th>
+            <th scope="col">subTotal</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.CartItems.forEach((el,index) => { %>
+
+          <tr>
+            <th scope="row"><%= index+1 %></th>
+            <td>
+                <img src="<%=el.Product.imageUrl %>" class="w-25 h-25" alt="...">
+            </td>
+            <td><%= el.Product.name%></td>
+            <td><%= el.Product.description%></td>
+            <td><%= el.Product.price%></td>
+            <td><button class="btn btn-light" onclick="location.href='/carts/item/<%=el.id%>/decrement'">-</button></td>
+            <td><%= el.quantity%></td>
+            <td><button class="btn btn-light" onclick="location.href='/carts/item/<%=el.id%>/increment'">+</button></td>
+            <td><%= el.subTotal%></td>
+            <td><button class="btn btn-danger" onclick="location.href='/carts/item/<%=el.id%>/delete'">X</button></td>
+
+
+          </tr>
+          <% }) %>
+          <tr>
+            <td colspan="5"><h3>Total</h3></td>
+            <td colspan="5"><h3><%=data.subTotal%></h3></td>
+          </tr>
+          
+        </tbody>
+      </table>
+      
+        <button onclick="location.href='/carts/checkout'" class="btn btn-success w-75 m-auto"> CHECKOUT</button>   
+
+
+    <%} else {%>
+      <h3>Your shopping cart is empty</h3>
     <%} %>
   </div>
   <%- include('partials/script') %>

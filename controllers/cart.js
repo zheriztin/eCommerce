@@ -47,60 +47,41 @@ module.exports = class Controller {
       return Cart.findOrCreate( { where: { UserId }, defaults: { UserId } } )
     })
     .then(data => {
-      // if cart belum ada, KETERANGAN TRUE/FALSE --> TRUE: CREATE,, FALSE: FIND
-      if ( data[1] ) {
-        //DATA ADA DI INDEX KE [0]
-        // res.json({message: "inidari  CREATE" , data})
-
-       
-      } else {
-        // if cart ditemukan
-        // res.json({message: "ini dari find", data})
-      }
-
-      //HITUNG subtotal di front end atau di controller
-
       // update the cartId in itemInput
       const CartId = data[0].dataValues.id
       itemInput.CartId = CartId
       itemInput.subTotal = price
-      
       //CARO APAKAH PRODUCT SUDAH ADA DI CART ITEM
-      
       return CartItem.findOrCreate( { where: { ProductId , CartId}, defaults: itemInput } )
     })
     .then( data => {
-    
       if ( !data[1] ) {
-        // res.json({message: "ini dari find", data})
         // update quantity by one 
-        console.log("masuk update");
         const updateInput = { ...data[0].dataValues }
         delete updateInput.id
         updateInput.quantity += 1
         updateInput.subTotal = updateInput.quantity * price
         return CartItem.update( updateInput, {  where: { id: data[0].id } } )
-
-      }  else {
-        console.log("masuk createddddd ><><<><><><><><>");
-      }
-
+      } 
     })
     .then( data => {
-      // res.json("aku sudah di then terakhir nih")
-      //redirect to cart page
       res.redirect('/carts')
-      // res.json({message:"ini sudah di increment by 111 ", data})
     })
     .catch(error => {
       console.log(error);
       res.send(error)
     })
-
   }
 
   static deleteItem(req, res) {
-
+    const {itemId} = req.params
+    CartItem.destroy( {where: {id: itemId} })
+    .then(data => {
+      res.redirect('/carts')
+    })
+    .catch(error => {
+      res.send(error)
+    })
   }
 
   static checkout(req,res) {
@@ -141,10 +122,47 @@ module.exports = class Controller {
       res.redirect('/products')
     })
     .catch(error => {
-      console.log(error, ">>>>> errrorrorroororoor");
       res.send(error)
     })
-
+  }
+    static increaseQuantity (req,res) {
+      const {itemId} = req.params
+      CartItem.findByPk(itemId,{include : Product})
+      .then(data => {
+        const {quantity, Product} = data
+        const input = {
+          quantity : quantity+1,
+          subTotal : (quantity+1)*Product.price,
+        }
+        return CartItem.update (input, {where: {id: itemId}})
+      })
+      .then (data => {
+        res.redirect('/carts')
+      })
+      .catch(error => {
+        res.send(error)
+      })
+    }
+  
+    static decreaseQuantity (req,res) {
+      const {itemId} = req.params
+      CartItem.findByPk(itemId,{include : Product})
+      .then(data => {
+        const {quantity, Product} = data
+        const input = {
+          quantity : quantity-1,
+          subTotal : (quantity-1)*Product.price,
+        }
+        return CartItem.update (input, {where: {id: itemId}})
+      })
+      .then (data => {
+        res.redirect('/carts')
+      })
+      .catch(error => {
+        res.send(error)
+      })
+    }
+    
   }
 
 
@@ -165,4 +183,3 @@ module.exports = class Controller {
 //     });
 
 // }
-}

@@ -4,13 +4,13 @@ const port = 3000
 const session = require('express-session')
 const router = require('./routes')
 
-const oneDay = 1000 * 60 * 60 * 24
+
 app.use(
   session({
     secret: 'session-coder',
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge: oneDay}
+
   })
 )
 
