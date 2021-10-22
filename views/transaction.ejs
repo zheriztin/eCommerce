@@ -40,27 +40,34 @@
 <%- include('partials/navbar') %>
 
   <h1 class="title">TRANSACTION PAGE </h1>
-  <div class="table">
-    <table>
-      <thead>
-        <tr>
-          <th>NO</th>
-          <th>Total</th>
-          <th>Tanggal</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% data.forEach((el,index) => { %>
+  <div class="">
+
+    <%if (data.length) {%>
+      <table class="table text-center" >
+        <thead>
           <tr>
-            <td><%= index+1 %></td>
-            <td><%= el.total%></td>
-            <td><%=el.createdAt%></td>
+            <th scope="col">No</th>
+            <th scope="col">Total</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach((el,index) => { %>
+          <tr>
+            <th scope="row"><%= index+1 %></th>
+            <td><%=formatCurrency(el.total)%></td>
+            <td><%=el.formatDate()%></td>
             <td><button onclick="location.href='transactions/<%=el.id%>'">DETAILS</button></td>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
+          <% }) %>
+      
+        </tbody>
+      </table>
+     
+    <%} else {%>
+       <h3 class="title">No Transaction History Yet ...</h3>
+      <%}%>
   </div>
   <%- include('partials/script') %>
   

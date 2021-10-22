@@ -38,55 +38,40 @@
 <body>
 <%- include('partials/navbar',{role:role}) %>
 
-  <h1 class="title">TRANSACTIONNNNNN DETAIL </h1>
+  <h1 class="title">TRANSACTION DETAIL </h1>
 
   <div class="">
-    <table>
+    <table class="table text-center" >
       <thead>
         <tr>
-          <th>NO</th>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>sub Total</th>
+          <th scope="col">No</th>
+          <th scope="col">Image</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Sub Total</th>
         </tr>
       </thead>
       <tbody>
         <% data.Orders.forEach((el,index) => { %>
-          <tr>
-            <td><%= index+1 %></td>
-            <td><img src="<%= el.itemImageUrl%>"  height="300px" width="300px"></td>
+        <tr>
+          <th scope="row"><%= index+1 %></th>
+          <td><img src="<%= el.itemImageUrl%>"  height="300px" width="300px"></td>
             <td><%= el.itemName%></td>
             <td><%= el.itemDescription%></td>
             <td><%= el.itemPrice%></td>
             <td><%=el.quantity %></td>
             <td><%= el.subTotal%></td>
-          </tr>
+        </tr>
         <% }) %>
+    
       </tbody>
     </table>
+    
 
-    <% data.Orders.forEach((el,index) => { %>
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img src="<%=el.itemImageUrl %>" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title"><%= el.itemName%></h5>
-            <p class="card-text"><%= el.itemDescription%></p>
-            <p class="card-text"><%= el.quantity%></p>
-            <p class="card-text"><small class="text-muted"><%= el.itemPRice%></small></p>
-            <p class="card-text"><%= el.subTotal%></p>
-          </div>
-        </div>
-      </div>
-  </div>
 
-    <% }) %>
+    
   </div>
   <%- include('partials/script') %>
   

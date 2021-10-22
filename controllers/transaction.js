@@ -1,5 +1,6 @@
 const { Transaction } = require('../models')
 const nodemailer = require('nodemailer')
+const formatCurrency = require ('../helpers/currency')
 
 module.exports = class Controller {
   static listTransactions(req, res) {
@@ -9,7 +10,7 @@ module.exports = class Controller {
     Transaction.findAll({ where: {UserId} })
     .then(data => {
       console.log("masuk then terakhisr");
-      res.render('transaction', {data,role})
+      res.render('transaction', {data,role,formatCurrency})
     })
     .catch(error => {
       console.log(error);
@@ -23,7 +24,7 @@ module.exports = class Controller {
     const {role} = req.session
     Transaction.findByPk(id, {include: {all: true, nested: true}} )
     .then(data => {
-      res.render('transactionDetail', {data,role})
+      res.render('transactionDetail', {data,role,formatCurrency})
 
     })
     .catch(error => {

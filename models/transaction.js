@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Transaction.hasMany(models.Order)
     }
+    formatDate () {
+      const newDate = new Date(this.createdAt)
+      const formatted = newDate.toLocaleDateString('id-ID')
+      return formatted
+    }
+ 
   };
   Transaction.init({
     total: DataTypes.FLOAT,
